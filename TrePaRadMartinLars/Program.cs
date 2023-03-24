@@ -1,45 +1,83 @@
-﻿namespace TrePaRadMartinLars
+﻿namespace TTTtest
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Tic Tac Toe\n");
-
-            Run();
-            // setup a board
-            // Create board class
-
-            // ShowBoard()
-            // AddUserChoice()
-            // setup two players
-            // console output for start of game
-            // take user input from console
-            // function taking turns
-            // function for deciding/checking winner
-            // output who has won on console            
+            Run();         
         }
         public static void Run()
         {
+            Console.WriteLine("Welcome to Tic Tac Toe");
+
             var board = new Board();
             bool isPlayerOne = true;
+            bool isPlayerTwo = false;
 
             while (true)
             {
-                UserTurn(board, isPlayerOne);
+                board.ShowBoard();
+                var currentPlayer = isPlayerOne ? 1 : 2;
+                
+                while (true)
+                {
+                    Console.Write($"Player {currentPlayer} enter the index position you want to choose: ");
+                    var boardIndex = GetUserInput();
+
+                    if (board.IsBoardIndexEmpty(boardIndex))
+                    {
+                        board.AddUserChoice(isPlayerOne, isPlayerTwo, boardIndex);
+                        break;
+                    }
+                    Console.WriteLine("Position already filled");
+                }
+                
+                board.ShowBoard();
+
+                if (isPlayerOne)
+                {
+                    if (board.UserHasWon(currentPlayer))
+                    {
+                        Console.WriteLine($"Player 1 has won!");
+                        break;
+                    }
+                }
+                else if (isPlayerTwo)
+                {
+                    if (board.UserHasWon(currentPlayer))
+                    {
+                        Console.WriteLine($"Player 2 has won!");
+                        break;
+                    }
+                }
+
+                bool IsItADraw = board.PlayerDraw();
+
+                if(IsItADraw)
+                {
+                    break;
+                }
+
                 isPlayerOne = !isPlayerOne;
-            }
-            
+                isPlayerTwo = !isPlayerTwo;
+            }            
         }
-        public static void UserTurn(Board board, bool isPlayerOne)
+        public static int GetUserInput()
         {
-            board.ShowBoard();
+            while (true)
+            {
+                var userInput = Console.ReadLine();
 
-            Console.Write("Player one enter the index position you want to choose: ");
-
-            var userInput = Console.ReadLine();
-
-            board.AddUserChoice(true, userInput);
+                try
+                {
+                    int boardIndex = Convert.ToInt32(userInput);
+                    return boardIndex;
+                }
+                catch
+                {
+                    Console.WriteLine("You did not enter a number");
+                }
+            }
         }
     }
 }
