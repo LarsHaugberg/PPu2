@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TTTtest
+namespace TrePaRadMartinLars
 {
     internal class Board
     {
